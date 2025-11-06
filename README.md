@@ -1,15 +1,39 @@
-# Goptional Package
+<p align="center">
+  <h1 align="center">Goptional</h1>
+  <p align="center">
+    <img align="center" width="70" src="./goptional.png"/>
+  </p>
+  <p align="center">
+    Provides a generic <code>Optional[T]</code> type for handling nullable or absent values in a type-safe manner. It is designed for general-purpose use and works with any type <code>T</code>
+  </p>
+</p>
 
-This package provides a generic `Optional[T]` type for handling nullable or absent values in a type-safe manner. It is designed for general-purpose use and works with any type `T`.
+<p align="center">
+  <a href="https://github.com/eduardolat/goptional/actions/workflows/ci.yaml?query=branch%3Amain">
+    <img src="https://github.com/eduardolat/goptional/actions/workflows/ci.yaml/badge.svg" alt="CI Status"/>
+  </a>
+  <a href="https://goreportcard.com/report/eduardolat/goptional">
+    <img src="https://goreportcard.com/badge/eduardolat/goptional" alt="Go Report Card"/>
+  </a>
+  <a href="https://github.com/eduardolat/goptional/releases/latest">
+    <img src="https://img.shields.io/github/release/eduardolat/goptional.svg" alt="Release Version"/>
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/eduardolat/goptional.svg" alt="License"/>
+  </a>
+  <a href="https://github.com/eduardolat/goptional">
+    <img src="https://img.shields.io/github/stars/eduardolat/goptional?style=flat&label=github+stars"/>
+  </a>
+</p>
 
 ## Features
 
 - **Zero Dependencies**: No external dependencies, making it lightweight and easy to integrate.
 - **Type Safety**: Generic implementation for any type `T`.
-- **JSON Compatibility**: Implements `json.Marshaler` and `json.Unmarshaler` for seamless integration with JSON serialization and deserialization.
+- **JSON Compatibility**: Implements `json.Marshaler` and `json.Unmarshaler` for integration with JSON serialization and deserialization.
 - **Pointer Avoidance**: Uses a struct-based approach to handle optionality without pointers.
 - **Zero Value Distinction**: Clearly distinguishes between zero values (like `0`, `""`, `false`) and absent values.
-- **General Purpose**: Can be used in any context where you need to represent optional values.
+- **General Purpose**: Can be used in any context where you need to represent optional values (it does not need to be JSON-specific).
 
 ## When to Use Optional vs Pointers
 
@@ -21,24 +45,30 @@ Use `Optional[T]` instead of `*T` when:
 
 ## Usage
 
+### Installation
+
+```bash
+go get github.com/eduardolat/goptional
+```
+
 ### Basic Usage
 
 ```go
-import "github.com/uforg/ufoconnect/core/internal/util/optional"
+import "github.com/eduardolat/goptional"
 
-// Create optional values
-optionalValue := optional.Optional[string]{
+// Create optional values (the direct way)
+optionalValue := goptional.Optional[string]{
   Value:  "hello",
   Present: true,
 }
 
 // Create optional values using helpers
-presentValue := optional.Some("hello")
-absentValue := optional.None[string]()
+presentValue := goptional.Some("hello")
+absentValue := goptional.None[string]()
 
 // Check presence
 if presentValue.Present {
-    fmt.Println("Value:", presentValue.Value) // Direct access to Value field
+  fmt.Println("Value:", presentValue.Value) // Direct access to Value field
 }
 
 // Get value or default
@@ -52,9 +82,9 @@ Any absent value is always serialized as `null` in JSON. This makes it predictab
 
 ```go
 type User struct {
-  Name  optional.Optional[string] `json:"name"`
-  Age   optional.Optional[int]    `json:"age"`
-  Email optional.Optional[string] `json:"email"`
+  Name  goptional.Optional[string] `json:"name"`
+  Age   goptional.Optional[int]    `json:"age"`
+  Email goptional.Optional[string] `json:"email"`
 }
 
 // Unmarshaling JSON with null values
@@ -77,16 +107,16 @@ jsonData, _ := json.Marshal(user)
 
 ```go
 // Numbers
-age := optional.Some(25)
-height := optional.None[float64]()
+age := goptional.Some(25)
+height := goptional.None[float64]()
 
 // Booleans
-isActive := optional.Some(true)
-isVerified := optional.None[bool]()
+isActive := goptional.Some(true)
+isVerified := goptional.None[bool]()
 
 // Slices
-tags := optional.Some([]string{"go", "optional"})
-emptyTags := optional.None[[]string]()
+tags := goptional.Some([]string{"go", "optional"})
+emptyTags := goptional.None[[]string]()
 
 // Custom types
 type Address struct {
@@ -94,8 +124,8 @@ type Address struct {
     City   string
 }
 
-homeAddress := optional.Some(Address{Street: "123 Main St", City: "Anytown"})
-workAddress := optional.None[Address]()
+homeAddress := goptional.Some(Address{Street: "123 Main St", City: "Anytown"})
+workAddress := goptional.None[Address]()
 ```
 
 ### Method Reference
@@ -107,9 +137,9 @@ workAddress := optional.None[Address]()
 
 #### Value Access
 
-- `Or(defaultValue T) T` - Returns the value if present, otherwise returns the default
+- `.Or(defaultValue T) T` - Returns the value if present, otherwise returns the default
 
 #### Direct Field Access
 
 - `.Present bool` - Boolean flag indicating if value is present
-- `.Value T` - The actual value (zero value of T when absent)
+- `.Value T` - The actual value (zero value of T when Present is false)

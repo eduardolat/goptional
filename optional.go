@@ -27,17 +27,17 @@ func None[T any]() Optional[T] {
 // UnmarshalJSON implements json.Unmarshaler.
 //
 // It sets the Optional to absent if the JSON is "null"; otherwise, it unmarshals the value and marks it as present.
-func (n *Optional[T]) UnmarshalJSON(data []byte) error {
+func (o *Optional[T]) UnmarshalJSON(data []byte) error {
 	if len(data) == 4 && data[0] == 'n' && data[1] == 'u' && data[2] == 'l' && data[3] == 'l' { // same as string(data) == "null" but without allocation
-		n.Present = false
+		o.Present = false
 		return nil
 	}
 
-	if err := json.Unmarshal(data, &n.Value); err != nil {
+	if err := json.Unmarshal(data, &o.Value); err != nil {
 		return err
 	}
 
-	n.Present = true
+	o.Present = true
 	return nil
 }
 
@@ -46,12 +46,12 @@ func (n *Optional[T]) UnmarshalJSON(data []byte) error {
 // If the value is absent, it returns "null".
 //
 // If present, it marshals the value.
-func (n Optional[T]) MarshalJSON() ([]byte, error) {
-	if !n.Present {
+func (o Optional[T]) MarshalJSON() ([]byte, error) {
+	if !o.Present {
 		return []byte("null"), nil
 	}
 
-	return json.Marshal(n.Value)
+	return json.Marshal(o.Value)
 }
 
 // Or returns the value if present; otherwise, returns the provided default value.

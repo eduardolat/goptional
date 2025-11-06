@@ -1,4 +1,4 @@
-package optional
+package goptional
 
 import (
 	"encoding/json"

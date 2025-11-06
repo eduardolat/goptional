@@ -1,0 +1,7 @@
+// Dev container docs: https://aka.ms/devcontainer.json
+// Image options: https://github.com/devcontainers/templates/tree/main/src/go
+// Image Dockerfile: https://github.com/devcontainers/images/tree/main/src/go
+{
+	"name": "goptional",
+	"image": "mcr.microsoft.com/devcontainers/go:2-1.25-trixie"
+}

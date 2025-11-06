@@ -1,0 +1,18 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  fmt:
+    desc: Format the project's code
+    cmds:
+      - go fmt ./...
+      - prettier --write .
+
+  test:
+    desc: Run the project's tests
+    cmd: go test ./...
+
+  lint:
+    desc: Lint the project's code
+    cmd: golangci-lint run ./...

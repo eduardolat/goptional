@@ -24,6 +24,9 @@
   <a href="https://github.com/eduardolat/goptional">
     <img src="https://img.shields.io/github/stars/eduardolat/goptional?style=flat&label=github+stars"/>
   </a>
+  <a href="https://pkg.go.dev/github.com/eduardolat/goptional" target="_blank" rel="noopener">
+		<img src="https://godoc.org/github.com/eduardolat/goptional?status.svg" alt="Go package documentation" />
+	</a>
 </p>
 
 ## Features
